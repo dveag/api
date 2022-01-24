@@ -1,0 +1,15 @@
+# API
+
+## Installation
+
+The api runs in docker. It's necessary to have docker and docker-compose.
+
+## Usage
+
+```
+docker-compose -d up
+```
+
+You can check the endpoints here:
+
+`http://localhost/docs`

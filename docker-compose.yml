@@ -1,0 +1,15 @@
+version: '3'
+services:
+  web:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    image: nft-api:local
+    command: gunicorn -b 0.0.0.0:80 nftapi.wsgi
+    env_file:
+      - backend/local.env
+    volumes:
+      - ./backend:/backend
+    ports:
+      - "80:80"
+
