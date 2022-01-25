@@ -1,15 +1,15 @@
 from rest_framework import serializers
+from .models import Nft, Item
+
+
+class NftSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Nft
+        fields = '__all__'
 
 
 class ItemSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=200)
-    description = serializers.CharField(max_length=1000)
-    external_link = serializers.URLField()
-    collection = serializers.CharField()
-    supply = serializers.IntegerField()
-    royalties = serializers.DecimalField()
+    class Meta:
+        model = Item
+        fields = '__all__'
 
-
-class NftSerializer(serializers.Serializer):
-    network = serializers.UUIDField(required=True)
-    wallet_id = serializers.UUIDField(required=True)
