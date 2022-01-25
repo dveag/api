@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Item, Nft
 
-# Register your models here.
+
+admin.site.register(Nft)
+admin.site.register(Item)

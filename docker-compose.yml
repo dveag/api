@@ -5,7 +5,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     image: nft-api:local
-    command: gunicorn -b 0.0.0.0:80 nftapi.wsgi
+    command: gunicorn -b 0.0.0.0:80 nftapi.wsgi --reload
     env_file:
       - backend/local.env
     volumes:
