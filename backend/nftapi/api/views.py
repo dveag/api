@@ -16,11 +16,13 @@ from api.services import NftService
 
 @api_view(['POST'])
 def nft_mint(request):
+    serializer = NftCreateSerializer(data=request.data)
+    serializer.is_valid()
     try:
-        serializer = NftCreateSerializer(data=request.data)
         NftService.create_nft_items(serializer.validated_data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    except:
+        return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        print(e)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -43,6 +45,5 @@ def nft_list(request):
         nft_query = NftService.list_nft()
         serializer = NftCreateSerializer(nft_query, many=True)
         return Response(serializer.data)
-    except Exception as e:
-        print(e)
-        return Response({'data': 'ERROR' }, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response({'data': 'Unexpected error' }, status=status.HTTP_400_BAD_REQUEST)
