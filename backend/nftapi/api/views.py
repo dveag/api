@@ -1,3 +1,48 @@
-from django.shortcuts import render
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-# Create your views here.
+from django.core.exceptions import ObjectDoesNotExist
+
+from api.models import Nft
+from api.serializers import (
+    ItemSerializer,
+    NftCreateSerializer,
+    NftSerializer,
+)
+from api.services import NftService
+
+
+
+@api_view(['POST'])
+def nft_mint(request):
+    try:
+        serializer = NftCreateSerializer(data=request.data)
+        NftService.create_nft_items(serializer.validated_data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    except:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def nft_details(request, pk=None):
+    try:
+        item = NftService.get_item(pk)
+        item_serializer = ItemSerializer(item)
+        nft_serializer = NftSerializer(item.nft)
+        nft_data = nft_serializer.data
+        nft_data['assets'] = [item_serializer.data]
+        return Response({'data': nft_data}, status=status.HTTP_200_OK)
+    except ObjectDoesNotExist:
+        return Response({'data': 'NFT does not exist with asset id %s' % pk }, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def nft_list(request):
+    try:
+        nft_query = NftService.list_nft()
+        serializer = NftCreateSerializer(nft_query, many=True)
+        return Response(serializer.data)
+    except Exception as e:
+        print(e)
+        return Response({'data': 'ERROR' }, status=status.HTTP_400_BAD_REQUEST)

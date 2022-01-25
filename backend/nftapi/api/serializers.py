@@ -8,8 +8,11 @@ class NftSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ItemSerializer(serializers.Serializer):
+class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = '__all__'
+        fields = ['name', 'description', 'external_link', 'collection', 'supply', 'royalties']
 
+
+class NftCreateSerializer(NftSerializer):
+    assets = ItemSerializer(many=True, source='items')
