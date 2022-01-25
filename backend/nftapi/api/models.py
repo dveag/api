@@ -19,7 +19,7 @@ class Nft(Base):
 
 class Item(Base):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    creator = models.ForeignKey(Nft, on_delete=models.CASCADE)
+    nft = models.ForeignKey(Nft, on_delete=models.CASCADE, related_name='items')
     name = models.CharField(max_length=200)
     description = models.CharField(max_length=1000)
     external_link = models.CharField(max_length=1000)

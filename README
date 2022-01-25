@@ -13,3 +13,9 @@ docker-compose -d up
 You can check the endpoints here:
 
 `http://localhost/docs`
+
+I recommend create a superuser to enter to the admin site.
+
+You can run the next command for that:
+
+`docker-compose run web python manage.py createsuperuser`
